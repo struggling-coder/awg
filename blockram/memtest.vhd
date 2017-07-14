@@ -20,6 +20,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
+use IEEE.std_logic_unsigned.all;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -56,6 +57,7 @@ signal addra: STD_LOGIC_VECTOR(7 downto 0);
 signal dina: STD_LOGIC_VECTOR(6 downto 0);
 signal douta: STD_LOGIC_VECTOR(6 DOWNTO 0);
 shared variable count: integer range 0 to 255 := 0;
+signal increment: std_logic_vector(3 downto 0):="0000";
 
 begin
 
@@ -81,6 +83,7 @@ begin
 			addra <= "00001000";
 		else 
 			count := count + 1;
+			increment <= increment + 1;
 		end if;
 	end if;
 

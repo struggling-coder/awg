@@ -1,9 +1,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use IEEE.std_logic_unsigned.all;
 
 entity outfifo is
   generic (
-  	word_length:integer := 16;
+  	word_length:integer := 1;
   	address_length:integer := 12);
   port (
 	init, clk: in std_logic;
@@ -15,22 +16,20 @@ entity outfifo is
 end entity ; -- outfifo
 
 architecture synth of outfifo is
-
--- COMPONENT RAM
   
   COMPONENT fifo_ram
   PORT (
     clka : IN STD_LOGIC;
     wea : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     addra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
-    dina : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-    douta : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+    dina : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    douta : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
   );
-  END COMPONENT;
-
-  signal whead, rhead: std_logic_vector(address_length-1 to 0) := (others => '0');
+	end component;
+	
+  signal whead, rhead: std_logic_vector(address_length-1 downto 0) := (others => '0');
   signal terminate: std_logic:= '0';
-  signal addr: std_logic_vector(address_length-1 to 0);
+  signal addr: std_logic_vector(11 downto 0);
   signal we: std_logic_vector(0 downto 0) := "0"; 
   begin
 
@@ -46,7 +45,11 @@ architecture synth of outfifo is
 	begin
 		if rising_edge(clk) then
 			if (pop = '1' and empty = '0') then
+				rhead <= rhead + 1;
+				terminate <= '0';
 			elsif (push = '1' and full = '0') then
+				whead <= whead + 1;
+				terminate <= '1';
 			end if;	
 		end if;
 	end process;
