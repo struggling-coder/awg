@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 entity outfifo is
   generic (
   	word_length:integer := 16;
-  	address_length:integer := 32);
+  	address_length:integer := 12);
   port (
 	init, clk: in std_logic;
 	push, pop: in std_logic;
